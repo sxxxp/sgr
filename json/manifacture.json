@@ -1,0 +1,56 @@
+{
+  "bank": {
+    "1": {
+      "value": 1,
+      "max": 150,
+      "require": "10 10 15 20"
+    },
+    "2": {
+      "value": 2,
+      "max": 350
+    }
+  },
+  "powerstation": {
+    "1": {
+      "value": 1,
+      "max": 150,
+      "require": "25 5 5 5"
+    },
+    "2": {
+      "value": 2,
+      "max": 350
+    }
+  },
+  "watertank": {
+    "1": {
+      "value": 1,
+      "max": 150,
+      "require": "10 20 5 5"
+    },
+    "2": {
+      "value": 2,
+      "max": 350
+    }
+  },
+  "restraunt": {
+    "1": {
+      "value": 1,
+      "max": 150,
+      "require": "15 15 15 5"
+    },
+    "2": {
+      "value": 2,
+      "max": 350
+    }
+  },
+  "town": {
+    "1": {
+      "max": 1,
+      "require": "10 10 15 15"
+    },
+    "2": {
+      "max": 2,
+      "require": "35 20 20 25"
+    }
+  }
+}
