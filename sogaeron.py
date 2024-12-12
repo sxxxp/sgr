@@ -222,6 +222,8 @@ class UpgradePannel:
         if key != "town":
             embed.add_field(
                 name=f"{current['value']}/m > {next['value']}/m", value="\u200b")
+            embed.add_field(
+                name=f"저장량 {current['max']} > 저장량 {next['max']}", value="\u200b")
         await self.pannel.message.edit(content="", embed=embed, view=UpgradeView(self, key))
 
 
@@ -266,8 +268,14 @@ class UpgradeSetupView(ui.View):
         manifacture = self.parent.pannel.user.getManifacture()
         options = [SelectOption(label="뒤로 돌아가기", value="back")]
         for key in manifacture:
-            options.append(SelectOption(
-                label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=key))
+            try:
+                Manifacture[key][str(manifacture[key]['level']+1)]
+            except KeyError:
+                options.append(SelectOption(
+                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=-1, description="미구현, 선택시 뒤로가기"))
+            else:
+                options.append(SelectOption(
+                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=key))
         select = ui.Select(options=options)
         select.callback = self.select_callback
         self.add_item(select)
