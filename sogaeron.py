@@ -61,7 +61,7 @@ def getJson(url: str):
     return data
 
 
-Manifacture = getJson("hh/json/manifacture.json")
+Manifacture = getJson("./json/manifacture.json")
 
 
 def nameToValue(name: str):
