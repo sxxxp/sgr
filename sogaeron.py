@@ -209,7 +209,7 @@ class UpgradePannel:
 
     async def upgradeMessage(self, interaction: Interaction):
         key = interaction.data['values'][0]
-        if key == "back":
+        if key in "back":
             return await self.pannel.setupMessage()
         manifacture = self.pannel.user.getManifacture()
         info = self.pannel.user.getInfo()
@@ -272,7 +272,7 @@ class UpgradeSetupView(ui.View):
                 Manifacture[key][str(manifacture[key]['level']+1)]
             except KeyError:
                 options.append(SelectOption(
-                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value="back", description="미구현, 선택시 뒤로가기"))
+                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=f"back{key}", description="미구현, 선택시 뒤로가기"))
             else:
                 options.append(SelectOption(
                     label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=key))
