@@ -272,7 +272,7 @@ class UpgradeSetupView(ui.View):
                 Manifacture[key][str(manifacture[key]['level']+1)]
             except KeyError:
                 options.append(SelectOption(
-                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=-1, description="미구현, 선택시 뒤로가기"))
+                    label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value="back", description="미구현, 선택시 뒤로가기"))
             else:
                 options.append(SelectOption(
                     label=f"{valueToKorean(key)} {manifacture[key]['level']+1}레벨 업그레이드", value=key))
