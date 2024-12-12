@@ -533,13 +533,14 @@ async def viewInfo(interaction: Interaction, 유저: discord.User | None = None)
 
 @tree.command(name="영지관리", description="영지관리를 할 수 있습니다.")
 async def managementTown(interaction: Interaction):
-
-    dm_channel = await interaction.user.create_dm()
-    if dm_channel:
-        message = await dm_channel.send(content="패널을 생성중이에요!")
-        await Pannel(interaction.user.id, message).setupMessage()
+    if isinstance(interaction.channel, discord.channel.DMChannel):
+        if Pannel._instances[interaction.user.id]:
+            await Pannel._instances[interaction.user.id].setupMessage()
+        else:
+            message = await interaction.user.send(content="패널을 생성중이에요!")
+            await Pannel(interaction.user.id, message).setupMessage()
     else:
-        await interaction.response.send_message("dm채널을 추가해 주세요!", ephemeral=True)
+        await interaction.response.send_message("dm채널에서 시도해주세요!", ephemeral=True)
 
 
 def exceptionHanlder(exc_type, exc_value, exc_tb):
