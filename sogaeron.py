@@ -313,6 +313,12 @@ class PannelSetupView(ui.View):
         await interaction.response.edit_message(content="업그레이드창으로 이동중!", view=None, embed=None)
         await UpgradePannel(self.parent).setupMessage()
 
+    @ui.button(label="수동저장", style=ButtonStyle.green, emoji="⬇", row=2)
+    async def save_callback(self, interaction: Interaction, button: ui.Button):
+        await interaction.response.edit_message(content="저장중!")
+        self.parent.user.save()
+        await self.parent.message.edit(content="저장완료!")
+
 
 class BackSetupView(ui.View):
     def __init__(self, parent, timeout: int = 0):
@@ -424,8 +430,17 @@ class User:
         embed = discord.Embed(title=f"{data['contry']} {data['money']}")
         embed1 = makeEmbed(embed, ['돈', '식량', '물', '전기'], values=(
             data["money"], data["food"], data["water"], data["electric"]))
-        print(embed, embed1)
-        return embed
+        return embed1
+
+    def save(self):
+        cur = con.cursor()
+        cur.execute("UPDATE info SET money = %s,food=%s,water=%s,electric=%s WHERE id = %s",
+                    (self.__info["money"], self.__info["food"], self.__info["water"], self.__info["electric"], self.id))
+        for i in self.__manifacture:
+            cur.execute("UPDATE manifacture SET level=%s,option=%s,last_claim=%s WHERE id = %s AND name = %s", (
+                self.__manifacture[i]["level"], self.__manifacture[i]["option"], self.__manifacture[i]["last_claim"], self.id, i))
+        con.commit()
+        cur.close()
 
 
 KST = datetime.timezone(datetime.timedelta(hours=9))
