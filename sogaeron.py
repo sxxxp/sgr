@@ -165,10 +165,11 @@ class Pannel:
             if i == "town":
                 claimText += f"{valueToKorean(i)} {__manifacture[i]['level']}레벨\n"
                 continue
-            last: datetime.timedelta = now-__manifacture[i]['last_claim']
-            __info[nameToValue(i)]
+            last: int = int(
+                (now-__manifacture[i]['last_claim']).total_seconds()/60)
+            maniData = Manifacture[i][__manifacture[i]]
             claimText += f"{valueToKorean(i)} {__manifacture[i]['level']}레벨 (분당 {__manifacture[i]['level']} 생산)\n"
-            claimText += f"마지막 징수 {int(last.total_seconds()//60)}분전\n"
+            claimText += f"{maniData['value']*last if maniData['value']*last < maniData['max'] else maniData['max']}/{maniData['max']}\n"
             infoText += f"{valueToKorean(nameToValue(i))} {int(__info[nameToValue(i)])}\n"
         embed.add_field(name="시설", value="```"+claimText+"```", inline=False)
         embed.add_field(name="자원", value="```"+infoText+"```", inline=False)
@@ -293,6 +294,10 @@ class PannelSetupView(ui.View):
             min = time.total_seconds()//60
             earn = Manifacture[str(key)][str(__manifacture[key]['level'])
                                          ]['value']*min
+            maxEarn = Manifacture[str(key)][str(
+                __manifacture[key]['level'])]['max']
+            if earn > maxEarn:
+                earn = maxEarn
             self.parent.user.getInfo()[nameToValue(
                 key)] += int(earn)
             output[valueToKorean(key)] = int(earn)
