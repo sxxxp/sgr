@@ -209,7 +209,7 @@ class UpgradePannel:
 
     async def upgradeMessage(self, interaction: Interaction):
         key = interaction.data['values'][0]
-        if key in "back":
+        if "back" in key:
             return await self.pannel.setupMessage()
         manifacture = self.pannel.user.getManifacture()
         info = self.pannel.user.getInfo()
