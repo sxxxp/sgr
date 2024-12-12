@@ -167,7 +167,7 @@ class Pannel:
                 continue
             last: int = int(
                 (now-__manifacture[i]['last_claim']).total_seconds()/60)
-            maniData = Manifacture[i][__manifacture[i]]
+            maniData = Manifacture[i][str(__manifacture[i]['level'])]
             claimText += f"{valueToKorean(i)} {__manifacture[i]['level']}레벨 (분당 {__manifacture[i]['level']} 생산)\n"
             claimText += f"{maniData['value']*last if maniData['value']*last < maniData['max'] else maniData['max']}/{maniData['max']}\n"
             infoText += f"{valueToKorean(nameToValue(i))} {int(__info[nameToValue(i)])}\n"
