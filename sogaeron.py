@@ -151,10 +151,11 @@ class Pannel:
     def __init__(self, id: int, message: discord.Message):
         self.user = User(id)
         self.id = str(id)
-        self.message = message
+        if not hasattr(self, "message"):
+            self.message = message
         self.error = ""
 
-    async def setupMessage(self):
+    async def MainEmbed(self):
         embed = discord.Embed(title="메인")
         __manifacture = self.user.getManifacture()
         now = datetime.datetime.now()
@@ -173,7 +174,10 @@ class Pannel:
             infoText += f"{valueToKorean(nameToValue(i))} {int(__info[nameToValue(i)])}\n"
         embed.add_field(name="시설", value="```"+claimText+"```", inline=False)
         embed.add_field(name="자원", value="```"+infoText+"```", inline=False)
-        await self.message.edit(content="", embed=embed, view=PannelSetupView(self))
+        return embed
+
+    async def setupMessage(self):
+        await self.message.edit(content="", embed=await self.MainEmbed(), view=PannelSetupView(self))
 
 
 def getManifactureRequire(key: str, manifacture: ManifactureType):
@@ -525,10 +529,10 @@ async def register(interaction: Interaction, 영지명: str, 국가: ContryEnum)
 async def viewInfo(interaction: Interaction, 유저: discord.User | None = None):
     if not 유저:
         embed = User(interaction.user.id).InfoEmbed()
-        await interaction.response.send_message(embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
     else:
-        embed = User(유저.id).InfoEmbed()
-        await interaction.response.send_message(embed, ephemeral=True)
+        embed = Pannel(유저.id, message=None).MainEmbed()
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 @tree.command(name="영지관리", description="영지관리를 할 수 있습니다.")
