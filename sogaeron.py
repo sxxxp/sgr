@@ -468,7 +468,7 @@ class MyClient(discord.Client):
     @tasks.loop(time=datetime.time(hour=0, minute=0, second=0, tzinfo=KST))
     async def saveData(self):
         for user in User._instances.values():
-            user.id
+            user.save()
 
 
 intents = discord.Intents.all()
